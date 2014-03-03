@@ -38,7 +38,7 @@ Checker.prototype.cantMonitor = function(conf) {
   });
 
   if(!pair)
-    return 'Gekko only supports the currency/assets pairs [' + exchange.pairs.join('], [') + ']';
+    return 'Gekko only supports the currency/assets pairs [' + _.pluck(exchange.markets, 'pair').join('], [') + ']';
 
   // everyting okay
   return false;
