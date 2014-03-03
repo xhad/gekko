@@ -47,11 +47,11 @@ var Manager = function(conf) {
 }
 
 Manager.prototype.init = function(callback) {
-  log.debug('getting balance & fee from', this.exchange.name);
+  log.debug('Getting balance & fee from', this.exchange.name);
   var prepare = function() {
     this.starting = false;
 
-    log.info('trading at', this.exchange.name, 'ACTIVE');
+    log.info('Trading at', this.exchange.name, 'ACTIVE');
     log.info(this.exchange.name, 'trading fee will be:', this.fee * 100 + '%');
     this.logPortfolio();
 
@@ -189,7 +189,7 @@ Manager.prototype.buy = function(amount, price) {
   // if not suficient funds
   if(amount > availabe) {
     return log.info(
-      'wanted to buy but insufficient',
+      'Wanted to buy but insufficient',
       this.currency,
       '(' + availabe + ')',
       'at',
@@ -200,9 +200,9 @@ Manager.prototype.buy = function(amount, price) {
   // if order to small
   if(amount < minimum) {
     return log.info(
-      'wanted to buy',
+      'Wanted to buy',
       this.asset,
-      'but the amount is to small',
+      'but the amount is too small',
       '(' + amount + ')',
       'at',
       this.exchange.name
@@ -210,7 +210,7 @@ Manager.prototype.buy = function(amount, price) {
   }
 
   log.info(
-    'attempting to BUY',
+    'Attempting too BUY',
     amount,
     this.asset,
     'at',
@@ -234,7 +234,7 @@ Manager.prototype.sell = function(amount, price) {
   // if not suficient funds
   if(amount < availabe) {
     return log.info(
-      'wanted to buy but insufficient',
+      'Wanted to buy but insufficient',
       this.asset,
       '(' + availabe + ')',
       'at',
@@ -245,9 +245,9 @@ Manager.prototype.sell = function(amount, price) {
   // if order to small
   if(amount < minimum) {
     return log.info(
-      'wanted to buy',
+      'Wanted to buy',
       this.currency,
-      'but the amount is to small',
+      'but the amount is too small',
       '(' + amount + ')',
       'at',
       this.exchange.name
@@ -255,7 +255,7 @@ Manager.prototype.sell = function(amount, price) {
   }
 
   log.info(
-    'attempting to SELL',
+    'Attempting to SELL',
     amount,
     this.asset,
     'at',
