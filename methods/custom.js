@@ -16,6 +16,8 @@ var method = {};
 
 // Prepare everything our method needs
 method.init = function() {
+  this.name = 'The gambler';
+
   this.currentTrend = 'long';
   this.requiredHistory = 0;
 }

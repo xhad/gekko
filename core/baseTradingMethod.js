@@ -53,8 +53,10 @@ var Base = function() {
   // should be set up now, check some things
   // to make sure everything is implemented
   // correctly.
-  if(!this.name)
-    log.warn('Warning, trading method has no name');
+  if(this.name)
+    log.info('\t', 'Using trading method:', this.name);
+  else
+    log.warn('\t', 'Warning, trading method has no name');
 
   if(!config.debug || !this.log)
     this.log = function() {};

@@ -14,6 +14,8 @@ method.init = function() {
   this.currentTrend;
   this.requiredHistory = config.tradingAdvisor.historySize;
 
+  this.name = 'DEMA';
+
   // define the indicators we need
   this.addIndicator('dema', 'DEMA', settings);
 }

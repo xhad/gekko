@@ -20,8 +20,6 @@ var Actor = function() {
   if(!_.contains(methods, methodName))
     util.die('Gekko doesn\'t know the method ' + methodName);
 
-  log.info('\t', 'Using the trading method: ' + methodName);
-
   var Consultant = require('../core/baseTradingMethod');
 
   var method = require('../methods/' + methodName);
