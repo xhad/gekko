@@ -62,6 +62,7 @@ Gekko works on the following exchanges:
 - CEX.io
 - Kraken
 - BTC-e
+- Bitfinex
 - ~~Cryptsy~~ (In the [pipeline](https://github.com/askmike/gekko/pull/200))
 
 ## Installing Gekko
