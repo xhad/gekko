@@ -132,7 +132,7 @@ Manager.prototype.trade = function(what) {
       if(this.infinityOrderExchange)
         amount = 10000;
       else
-        amount = this.getBalance(this.currency) / this.ticker.ask;
+        amount = this.getBalance(this.currency) / (this.ticker.ask+(this.ticker.ask*this.fee));
 
       // can we just create a MKT order?
       if(this.directExchange)
@@ -184,14 +184,14 @@ Manager.prototype.buy = function(amount, price) {
 
   var currency = this.getFund(this.currency);
   var minimum = this.getMinimum(price);
-  var availabe = this.getBalance(this.currency) / price;
+  var available = this.getBalance(this.currency) / price;
 
   // if not suficient funds
-  if(amount > availabe) {
+  if(amount > available) {
     return log.info(
       'Wanted to buy but insufficient',
       this.currency,
-      '(' + availabe + ')',
+      '(' + available + ')',
       'at',
       this.exchange.name
     );
@@ -229,14 +229,14 @@ Manager.prototype.sell = function(amount, price) {
   price /= 100000000;
 
   var minimum = this.getMinimum(price);
-  var availabe = this.getBalance(this.asset);
+  var available = this.getBalance(this.asset);
 
   // if not suficient funds
-  if(amount < availabe) {
+  if(amount < available) {
     return log.info(
       'Wanted to buy but insufficient',
       this.asset,
-      '(' + availabe + ')',
+      '(' + available + ')',
       'at',
       this.exchange.name
     );
