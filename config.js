@@ -114,6 +114,7 @@ config.custom = {
 // watched by config.watch
 config.trader = {
   enabled: false,
+  tradePercent: 10,
   key: '',
   secret: '',
   username: '' // your username, only fill in when using bitstamp or cexio
