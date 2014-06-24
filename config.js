@@ -23,6 +23,8 @@ config.debug = true; // for additional logging / debugging
 config.watch = {
   enabled: true,
   exchange: 'cryptsy', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio', 'cryptsy' or 'kraken'
+  key: '',
+  secret: '',
   currency: 'BTC',
   asset: 'LTC'
 }
@@ -111,7 +113,7 @@ config.custom = {
 // Enabling this will activate trades for the market being
 // watched by config.watch
 config.trader = {
-  enabled: true,
+  enabled: false,
   key: '',
   secret: '',
   username: '' // your username, only fill in when using bitstamp or cexio
