@@ -54,8 +54,12 @@ MandrillMailer.prototype.setup = function(done) {
     } else {
       this.done();
     }
+
+    if(mailConfig.testProcessAdvice){
+      this.testProcessAdvice();
+    }
     
-  log.debug('Setup email adviser.');
+  log.debug('Setup email (Mandrill) adviser successfully.');
 }
 
 MandrillMailer.prototype.mail = function(subject, content, done) {
@@ -79,9 +83,15 @@ MandrillMailer.prototype.mail = function(subject, content, done) {
     "ip_pool": ip_pool
   }, 
     function(result){
-      done();
+      log.debug("Mail sent successfully via Mandrill: ", result);
+      if(done){
+        done();
+      }
   }, function(error){
       self.checkResults(error);
+      if(done){
+        done();
+      }
   });
 }
 
@@ -104,6 +114,14 @@ MandrillMailer.prototype.processAdvice = function(advice) {
   var subject = 'New advice: go ' + advice.recommandation;
 
   this.mail(subject, text);
+}
+
+MandrillMailer.prototype.testProcessAdvice = function(){
+  var advice = {
+    recommandation: "short"
+  };
+  this.price = 0;
+  this.processAdvice(advice);
 }
 
 MandrillMailer.prototype.checkResults = function(err) {
