@@ -1,6 +1,9 @@
 ﻿// Everything is explained here:
 // https://github.com/askmike/gekko/blob/master/docs/Configuring_gekko.md
 
+var fs = require('fs');
+var configExtend = require('config-extend');
+
 var config = {};
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -176,6 +179,25 @@ config.mailer = {
   tls: false        // Use TLS if true
 }
 
+config.mandrillMailer = {
+  enabled: false,
+  sendMailOnStart: true,
+  to: '', // to email
+  toName: 'Gekko user',
+  from: '', // from email
+  fromName: 'Gekko bot info',
+  apiKey: '', // Mandrill api key
+}
+
+config.smsPlivo = {
+  enabled: false,
+  sendMailOnStart: true,
+  smsPrefix: 'GEKKO:', // always start SMS message with this
+  to: '', // your SMS number
+  from: '', // SMS number to send from provided by Plivo
+  authId: '', // your Plivo auth ID
+  authToken: '' // your Plivo auth token
+}
 
 config.ircbot = {
   enabled: false,
@@ -240,5 +262,20 @@ config.backtest = {
 // 
 // Not sure? Read this first: https://github.com/askmike/gekko/issues/201
 config['I understand that Gekko only automates MY OWN trading strategies'] = false;
+
+
+// ----------------------------------------------
+//            LOCAL CONFIG SETTINGS
+// ----------------------------------------------
+
+// If you have a server deployed you may want to store environment specific 
+// configuration. You can create a file called 'config-local.js' and any settings you 
+// place in there and export will override the configuration defined in this file. 
+// Make sure to export the config object in the 'config-local.js' file!
+if(fs.existsSync('./config-local.js')){
+  var localConfig = require('./config-local');
+  // this just deep copies the one object over the other, with last argument taking precedence.
+  config = configExtend(config, localConfig);
+}
 
 module.exports = config;
