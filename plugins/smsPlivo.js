@@ -58,7 +58,7 @@ SMSPlivo.prototype.setup = function(done) {
       this.done();
     }
     
-  log.debug('Setup email adviser.');
+  log.debug('Setup SMS adviser.');
 }
 
 SMSPlivo.prototype.mail = function(content, done) {
