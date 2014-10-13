@@ -39,6 +39,3 @@ node_modules
 candles.csv
 cexio.db
 history
-
-# local config files
-config-local.js
