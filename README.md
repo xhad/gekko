@@ -57,14 +57,14 @@ Gekko also has a plugin system that can do certain things whenever something hap
 
 Gekko works on the following exchanges:
 
-- Mt. Gox
+- ~~Mt. Gox~~
 - Bitstamp
 - CEX.io
 - Kraken
 - BTC-e
 - Bitfinex
 - LakeBTC
-- ~~Cryptsy~~ (In the [pipeline](https://github.com/askmike/gekko/pull/200))
+- Cryptsy
 
 ## Installing Gekko
 
