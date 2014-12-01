@@ -37,7 +37,7 @@ if(!util.recentNode())
     'Your local version of nodejs is too old. ',
     'You have ',
     process.version,
-    ' and you need atleast ',
+    ' and you need at least ',
     util.getRequiredNodeVersion()
   ].join(''));
 

@@ -22,9 +22,11 @@ config.debug = true; // for additional logging / debugging
 // Monitor the live market
 config.watch = {
   enabled: true,
-  exchange: 'Bitstamp', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio' or 'kraken'
-  currency: 'USD',
-  asset: 'BTC'
+  exchange: 'cryptsy', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio', 'cryptsy' or 'kraken'
+  key: '',
+  secret: '',
+  currency: 'BTC',
+  asset: 'LTC'
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,6 +114,7 @@ config.custom = {
 // watched by config.watch
 config.trader = {
   enabled: false,
+  tradePercent: 10,
   key: '',
   secret: '',
   username: '' // your username, only fill in when using bitstamp or cexio
@@ -135,7 +138,7 @@ config.profitSimulator = {
   // only want report after a sell? set to `false`.
   verbose: false,
   // how much fee in % does each trade cost?
-  fee: 0.6,
+  fee: 0.0025,
   // how much slippage should Gekko assume per trade?
   slippage: 0.05
 }
@@ -258,6 +261,6 @@ config.backtest = {
 // understand this.
 // 
 // Not sure? Read this first: https://github.com/askmike/gekko/issues/201
-config['I understand that Gekko only automates MY OWN trading strategies'] = false;
+config['I understand that Gekko only automates MY OWN trading strategies'] = true;
 
 module.exports = config;
