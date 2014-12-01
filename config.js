@@ -22,11 +22,11 @@ config.debug = true; // for additional logging / debugging
 // Monitor the live market
 config.watch = {
   enabled: true,
-  exchange: 'cryptsy', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio', 'cryptsy' or 'kraken'
+  exchange: 'bitstamp', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio', 'cryptsy' or 'kraken'
   key: '',
   secret: '',
-  currency: 'BTC',
-  asset: 'LTC'
+  currency: 'USD',
+  asset: 'BTC'
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
