@@ -138,7 +138,7 @@ config.profitSimulator = {
   // only want report after a sell? set to `false`.
   verbose: false,
   // how much fee in % does each trade cost?
-  fee: 0.0025,
+  fee: 0.6,
   // how much slippage should Gekko assume per trade?
   slippage: 0.05
 }
@@ -261,6 +261,6 @@ config.backtest = {
 // understand this.
 // 
 // Not sure? Read this first: https://github.com/askmike/gekko/issues/201
-config['I understand that Gekko only automates MY OWN trading strategies'] = true;
+config['I understand that Gekko only automates MY OWN trading strategies'] = false;
 
 module.exports = config;
