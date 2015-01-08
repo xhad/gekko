@@ -12,7 +12,7 @@
 // Required parameters per actor.
 // 
 // name: Name of the actor
-// slug: filename of the actor, expected to be in `gekko/actors/`
+// slug: filename of the actor, expected to be in `gekko/plugins/`
 // description: text describing the actor. Unused on silent actors.
 // async: upon creating a new actor instance, does something async
 //    happen where Gekko needs to wait for? If set to true, the
