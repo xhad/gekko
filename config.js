@@ -22,7 +22,7 @@ config.debug = true; // for additional logging / debugging
 // Monitor the live market
 config.watch = {
   enabled: true,
-  exchange: 'bitstamp', // 'MtGox', 'BTCe', 'Bitstamp', 'cexio', 'cryptsy' or 'kraken'
+  exchange: 'bitstamp', // @link https://github.com/askmike/gekko#supported-exchanges 
   key: '',
   secret: '',
   currency: 'USD',

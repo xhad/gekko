@@ -120,17 +120,15 @@ Trader.prototype.getTrades = function(since, callback, descending) {
   // Bitfinex API module does not support start date, but Bitfinex API does. 
   // Could implement here as in following comments:
   // var start = since ? since.unix() : null;
-  this.bitfinex.trades(defaultAsset, /* start, */ function (err, data, body) {
+  this.bitfinex.trades(defaultAsset, /* start, */ function (err, data) {
     if (err)
       return self.retry(self.getTrades, args);
 
-    var result = JSON.parse(body);
-
-    var trades = _.map(result, function (trade) {
+    var trades = _.map(data, function (trade) {
       return {
-          "date":  trade.timestamp,
-         "price": +trade.price,
-        "amount": +trade.amount // not mentioned in gekko exchange docs
+        date:  trade.timestamp,
+        price: +trade.price,
+        amount: +trade.amount // not mentioned in gekko exchange docs [@TODO mike]
       }
     });
 
