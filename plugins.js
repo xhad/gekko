@@ -91,6 +91,18 @@ var actors = [
     }]
   },
   {
+    name: 'Pushbullet',
+    description: 'Pushbullet module to text yourself everytime Gekko has new advice.',
+    slug: 'pushbullet',
+    async: true,
+    silent: false,
+    modes: ['realtime'],
+    dependencies: [{
+      module: 'pushbullet',
+      version: '0.1.0'
+    }]
+  },
+  {
     name: 'SMS Plivo',
     description: 'SMS module to text yourself everytime Gekko has new advice. Uses Plivo.',
     slug: 'smsPlivo',
