@@ -231,6 +231,13 @@ config.redisBeacon = {
   ]
 }
 
+config.pushbullet = {
+  enabled: true,
+  sendMailOnStart: true,
+  deviceId: '', // your Pushbullet device ID, sends to all devices if empty
+  authToken: '' // your Pushbullet auth token
+}
+
 // not in a working state
 // read: https://github.com/askmike/gekko/issues/156
 config.webserver = {
