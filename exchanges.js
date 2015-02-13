@@ -316,7 +316,22 @@ var exchanges = [
     requires: ['key', 'secret'],
     providesHistory: false,
     fetchTimespan: 60
-  }
+  },
+  {
+    name: 'meXBT',
+    slug: 'mexbt',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['MXN'],
+    assets: ['BTC'],
+    markets: [
+      {
+        pair: ['MXN', 'BTC'], minimalOrder: { amount: 0.01, unit: 'asset' }
+      }
+    ],
+    requires: ['key', 'secret', 'username'],
+    providesHistory: false
+  },
 ];
 
 module.exports = exchanges;
