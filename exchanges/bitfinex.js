@@ -118,9 +118,8 @@ Trader.prototype.getTrades = function(since, callback, descending) {
   var self = this;
 
   // Bitfinex API module does not support start date, but Bitfinex API does. 
-  // Could implement here as in following comments:
-  // var start = since ? since.unix() : null;
-  this.bitfinex.trades(defaultAsset, /* start, */ function (err, data) {
+  var start = since ? since.unix() : null;
+  this.bitfinex.trades(defaultAsset, start, function (err, data) {
     if (err)
       return self.retry(self.getTrades, args);
 
