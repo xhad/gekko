@@ -48,7 +48,7 @@ Trader.prototype.retry = function(method, args) {
 
 Trader.prototype.getPortfolio = function(callback) {
   this.bitfinex.wallet_balances(function (err, data, body) {
-    var portfolio = _.map(body, function (asset) {
+    var portfolio = _.map(data, function (asset) {
       return {
         name: asset.currency.toUpperCase(),
         // TODO: use .amount instead of .available?
@@ -118,9 +118,8 @@ Trader.prototype.getTrades = function(since, callback, descending) {
   var self = this;
 
   // Bitfinex API module does not support start date, but Bitfinex API does. 
-  // Could implement here as in following comments:
-  // var start = since ? since.unix() : null;
-  this.bitfinex.trades(defaultAsset, /* start, */ function (err, data) {
+  var start = since ? since.unix() : null;
+  this.bitfinex.trades(defaultAsset, start, function (err, data) {
     if (err)
       return self.retry(self.getTrades, args);
 
