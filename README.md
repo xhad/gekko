@@ -65,6 +65,8 @@ Gekko works on the following exchanges:
 - Bitfinex
 - LakeBTC
 - Cryptsy
+- meXBT
+
 
 ## Installing Gekko
 
