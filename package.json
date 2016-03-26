@@ -27,7 +27,8 @@
     "kraken-api": "0.1.x",
     "lakebtc_nodejs": "0.1.x",
 	  "pushbullet": "1.4.3",
-    "mexbt": "0.0.x"
+    "mexbt": "0.0.x",
+    "poloniex.js": "0.0.6"
   },
   "devDependencies": {
     "nodeunit": "0.8.2"
