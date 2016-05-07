@@ -332,6 +332,25 @@ var exchanges = [
     requires: ['key', 'secret', 'username'],
     providesHistory: false
   },
+  {
+    name: 'Poloniex',
+    slug: 'poloniex',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['BTC', 'XMR', 'USDT'],
+    assets: ['BTC', 'XMR', 'ETH', 'FCT', 'MAID', 'DASH', 'XVC', 'GRC'],
+    markets: [
+      { pair: ['BTC', 'ETH'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'XMR'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'FCT'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'MAID'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'DASH'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'XVC'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+      { pair: ['BTC', 'GRC'], minimalOrder: { amount: 0.01, unit: 'asset' } },
+    ],
+    requires: ['key', 'secret'],
+    providesHistory: 'date',
+  },
 ];
 
 module.exports = exchanges;
