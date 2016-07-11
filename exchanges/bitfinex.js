@@ -60,7 +60,7 @@ Trader.prototype.getTicker = function(callback) {
   var args = [this.pair, process]
   // the function that will handle the API callback
   var process = function(err, data, body) {
-    if (err)
+    if (err) {
       // on error we need to recurse this function
       // however we don't want to hit any API ratelimits
       // so we use this.retry since this will wait first
