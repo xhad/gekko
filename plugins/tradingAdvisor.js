@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var config = util.getConfig();
 var dirs = util.dirs();
-var log = require(dirs.core + '/log');
+var log = require(dirs.core + 'log');
 var CandleBatcher = require(dirs.core + 'candleBatcher');
 
 var moment = require('moment');
@@ -16,17 +16,21 @@ var Actor = function(done) {
 
   this.batcher = new CandleBatcher(config.tradingAdvisor.candleSize);
 
+  this.setupTradingMethod();
+
   var mode = util.gekkoMode();
 
-  if(mode === 'realtime')
-    this.prepareHistoricalData(this.init);
-  else if(mode === 'backtest')
-    this.init();
+  if(mode === 'realtime') {
+    var Stitcher = require(dirs.core + 'dataStitcher');
+    var stitcher = new Stitcher(this.batcher);
+    stitcher.prepareHistoricalData(done);
+  } else if(mode === 'backtest')
+    done();
 }
 
 util.makeEventEmitter(Actor);
 
-Actor.prototype.init = function(done) {
+Actor.prototype.setupTradingMethod = function() {
   var methodName = config.tradingAdvisor.method;
 
   if(!fs.existsSync(dirs.methods + methodName + '.js'))
@@ -45,118 +49,11 @@ Actor.prototype.init = function(done) {
   });
 
   this.method = new Consultant;
-
-  this.batcher
-    .on('candle', this.processCustomCandle)
-
   this.method
     .on('advice', this.relayAdvice);
 
-  this.done();
-}
-
-Actor.prototype.prepareHistoricalData = function(done) {
-  // - step 1: check oldest trade reachable by API
-  // - step 2: check most recent stored candle window
-  // - step 3: see if overlap
-  // - step 4: feed candle stream into CandleBatcher
-
-  var requiredHistory = config.tradingAdvisor.candleSize * config.tradingAdvisor.historySize * 60;
-  var Reader = require(dirs.plugins + config.tradingAdvisor.adapter + '/reader');
-
-  var reader = new Reader;
-
-  // TODO: refactor cb hell
-  this.checkExchangeTrades(requiredHistory, function(err, window) {
-    log.debug(
-      'Exchange has data spanning',
-      window.to - window.from,
-      'seconds, we need at least',
-      requiredHistory,
-      'seconds.'
-    );
-
-    if(window.to - window.from > requiredHistory) {
-      // calc new required history
-      var dif = window.to - window.from;
-      requiredHistory = Math.floor(dif / 60 / config.tradingAdvisor.candleSize);
-
-      log.debug(
-        'Exchange returns more data than we need, shift required history to',
-        requiredHistory,
-        '.'
-      );
-
-      util.setConfigProperty(
-        'tradingAdvisor',
-        'historySize',
-        requiredHistory
-      );
-
-      return done();
-    }
-
-    var exchangeTo = moment.unix(window.to).startOf('minute').unix();
-    var exchangeFrom = moment.unix(window.from).add(1, 'm').startOf('minute').unix();
-    var optimalFrom = exchangeTo - requiredHistory;
-
-    reader.mostRecentWindow(exchangeFrom, optimalFrom, function(result) {
-      if(!result) {
-        log.info('\t', 'Unable to use locally stored candles.');
-        return done();
-      }
-
-      // seed the batcher with locally stored historical candles
-      log.debug('Using locally stored historical candles.');
-
-      reader.get(result, exchangeFrom, function(rows) {
-        this.batcher.write(rows);
-        reader.close();
-        done();
-
-      }.bind(this));
-    }.bind(this));
-  }.bind(this));
-}
-
-Actor.prototype.checkExchangeTrades = function(requiredHistory, next) {
-  var provider = config.watch.exchange.toLowerCase();
-  var DataProvider = require(util.dirs().gekko + 'exchanges/' + provider);
-
-  var exchangeChecker = require(util.dirs().core + 'exchangeChecker');
-  var exchangeSettings = exchangeChecker.settings(config.watch)
-
-  var watcher = new DataProvider(config.watch);
-
-  if(exchangeSettings.maxHistoryFetch)
-    var since = exchangeSettings.maxHistoryFetch;
-  else if(exchangeSettings.providesHistory === 'date')
-    // NOTE: uses current time
-    var since = moment()
-      .subtract(requiredHistory, 'seconds')
-      .subtract(config.tradingAdvisor.candleSize, 'minutes');
-  else if(exchangeSettings.providesHistory)
-    // NOTE: specific to btc-e atm
-    var since = exchangeSettings.providesHistory;
-
-  util.setConfigProperty(
-    'tradingAdvisor',
-    'firstFetchSince',
-    since
-  );
-
-  watcher.getTrades(since, function(e, d) {
-    if(_.isEmpty(d))
-      return util.die(
-        `Gekko tried to retrieve data since ${since.format('YYYY-MM-DD HH:mm:ss')}, however
-        ${provider} did not return any trades. Try to raise the tradingAdviser.historySize.`
-      );
-
-    next(e, {
-      from: _.first(d).date,
-      to: _.last(d).date
-    })
-  });
+  this.batcher
+    .on('candle', this.processCustomCandle)
 }
 
 // HANDLERS
@@ -166,11 +63,14 @@ Actor.prototype.processCandle = function(candle, done) {
   done();
 }
 
-Actor.prototype.finalize = _.noop;
-
 // propogate a custom sized candle to the trading method
 Actor.prototype.processCustomCandle = function(candle) {
   this.method.tick(candle);
+}
+
+// pass through shutdown handler
+Actor.prototype.finish = function(done) {
+  this.method.finish(done);
 }
 
 // EMITTERS

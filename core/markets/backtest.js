@@ -1,15 +1,18 @@
 var _ = require('lodash');
-var util = require('./util');
+var util = require('../util');
 var config = util.getConfig();
 var dirs = util.dirs();
-var log = require('./log');
+var log = require(dirs.core + 'log');
 var moment = require('moment');
 
 var adapter = config.adapters[config.backtest.adapter];
 var Reader = require(dirs.gekko + adapter.path + '/reader');
 var daterange = config.backtest.daterange;
 
-if(daterange.to <= daterange.from)
+var to = moment.utc(daterange.to);
+var from = moment.utc(daterange.from);
+
+if(to <= from)
   util.die('This daterange does not make sense.')
 
 var Market = function() {
@@ -27,8 +30,8 @@ var Market = function() {
   this.reader = new Reader();
   this.batchSize = config.backtest.batchSize;
   this.iterator = {
-    from: daterange.from.clone(),
-    to: daterange.from.clone().add(this.batchSize, 'm').subtract(1, 's')
+    from: from.clone(),
+    to: from.clone().add(this.batchSize, 'm').subtract(1, 's')
   }
 }
 
@@ -37,7 +40,7 @@ Market.prototype = Object.create(Readable.prototype, {
   constructor: { value: Market }
 });
 
-Market.prototype._read = function noop() {
+Market.prototype._read = function() {
   if(this.pushing)
     return;
 
@@ -45,29 +48,33 @@ Market.prototype._read = function noop() {
 }
 
 Market.prototype.get = function() {
-  if(this.iterator.to >= daterange.to) {
-    this.iterator.to = daterange.to;
+  if(this.iterator.to >= to) {
+    this.iterator.to = to;
     this.ended = true;
   }
 
   this.reader.get(
     this.iterator.from.unix(),
     this.iterator.to.unix(),
+    'full',
     this.processCandles
   )
 }
 
-Market.prototype.processCandles = function(candles) {
+Market.prototype.processCandles = function(err, candles) {
   this.pushing = true;
   var amount = _.size(candles);
 
-  if(!this.ended && amount <= this.batchSize) {
+  if(amount === 0)
+    util.die('Query returned no candles (do you have local data for the specified range?)');
+
+  if(!this.ended && amount < this.batchSize) {
     var d = function(ts) {
       return moment.unix(ts).utc().format('YYYY-MM-DD HH:mm:ss');
     }
     var from = d(_.first(candles).start);
     var to = d(_.last(candles).start);
-    log.warn(`Simulation based on incomplete market data (missing between ${from} and ${to}).`);
+    log.warn(`Simulation based on incomplete market data (${this.batchSize - amount} missing between ${from} and ${to}).`);
   }
 
   _.each(candles, function(c, i) {

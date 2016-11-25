@@ -22,8 +22,7 @@ Heart.prototype.tick = function() {
 }
 
 Heart.prototype.determineLiveTickRate = function() {
-  // TODO: make dynamic based on either exchange or market activity.
-
+  // TODO: fix
   if(util.getConfig().watch.exchange === 'okcoin')
     var seconds = 2;
   else

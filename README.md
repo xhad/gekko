@@ -1,4 +1,4 @@
-# Gekko [![Build Status](https://travis-ci.org/askmike/gekko.png)](https://travis-ci.org/askmike/gekko)
+# Gekko [![npm](https://img.shields.io/npm/dm/gekko.svg)]() [![Build Status](https://travis-ci.org/askmike/gekko.png)](https://travis-ci.org/askmike/gekko) [![Build status](https://ci.appveyor.com/api/projects/status/github/askmike/gekko?branch=stable&svg=true)](https://ci.appveyor.com/project/askmike/gekko)
 
 ![Gordon Gekko](http://mikevanrossum.nl/static/gekko.jpg)
 
@@ -17,10 +17,17 @@ Gekko is a Bitcoin trading bot and backtesting platform that connects to popular
 * Backtester (for TA strategies)
 * Tool for systematic trading
 * Low level market library
+ * Monitor the live market
+ * Import historical market data
+ * Broadcast market data over pubsub messaging systems
+
+## TA strategies
+
+Gekko comes with some [basic strategies](https://github.com/askmike/gekko/blob/stable/docs/Trading_methods.md) (which implement a single indicator). But with some basic javascript you can [create your own strategies](https://github.com/askmike/gekko/blob/stable/docs/trading_bot/creating_a_trading_method.md). You can use over 130 indicators to create your perfect prediction model ([full list](https://github.com/askmike/gekko/blob/stable/docs/trading_bot/talib_indicators.md) of supported indicators). *Why don't you combine Bollinger Bands, CCI and MACD with a STOCHRSI indicator?*
 
 ## Automated Trading platform
 
-Gekko can watch the realtime markets, you can [apply automated trading methods](https://github.com/askmike/gekko/blob/stable/docs/internals/trading_methods.md) to do live or simulated trading ([automated trading](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md#trader) or [paper trading](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md#profit-simulator-paper-trader)). Gekko stores all market data it sees, this makes it possible to simulate trading strategies against historical data to see whether they would have been profitable ([backtesting](https://github.com/askmike/gekko/blob/stable/docs/Backtesting.md)).
+Gekko can watch the realtime markets, you can [apply automated trading methods](https://github.com/askmike/gekko/blob/stable/docs/trading_bot/creating_a_trading_method.md) to do live or simulated trading ([automated trading](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md#trader) or [paper trading](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md#profit-simulator-paper-trader)). Gekko stores all market data it sees, this makes it possible to simulate trading strategies against historical data to see whether they would have been profitable ([backtesting](https://github.com/askmike/gekko/blob/stable/docs/Backtesting.md)).
 
 Gekko is not built for HFT or anything related to being the fastest (like arbitrage). The trading methods Gekko can do are based on TA indicators used by human day traders. This means that Gekko does not look at data below the one minute timescale and will not trade more than a couple of times per week (depending on configuration).
 
@@ -32,13 +39,31 @@ Gekko is not built for HFT or anything related to being the fastest (like arbitr
 - An exchange.
 - An arbitrage bot.
 
-## Market interface
-
-Gekko has a plugin system that can do certain things whenever something happens or let Gekko communicate through external platforms. Check [all currently existing plugins](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md) or [add your own](https://github.com/askmike/gekko/blob/stable/docs/internal/plugins.md).
-
 ## Supported exchanges
 
-Gekko supports multiple cryptocurreny exchanges, see [here](https://github.com/askmike/gekko/blob/stable/docs/supported_exchanges.md).
+| Exchange        | Monitoring | [Trading](https://github.com/askmike/gekko/blob/stable/docs/Plugins.md#trader) | [Importing](https://github.com/askmike/gekko/blob/stable/docs/Importing.md) | Notes |
+| --------------- |:----------:|:-------:|:---------:|-------|
+| [Poloniex](https://poloniex.com/)      | ✓ | ✓ | ✓ | |
+| [BTCC](https://btcc.com/)      | ✓ | ✓ | ✓ | (=BTCChina) |
+| [Bitstamp](https://bitstamp.com/)      | ✓ | ✓ | ✗ | |
+| [Kraken](https://kraken.com/)      | ✓ | ✓ | ✗ | |
+| [Bitfinex](https://bitfinex.com/)      | ✓ | ✓ | ✗ | |
+| [BTC-e](https://btc-e.com/)      | ✓ | ✓ | ✗ | |
+| [Okcoin.cn](https://www.okcoin.cn/)      | ✓ | ✓ | ✗ | (China, see [#352](https://github.com/askmike/gekko/pull/352)) |
+| [Cex.io](https://cex.io/)      | ✓ | ✓ | ✗ | |
+| [BTC Markets](https://btcmarkets.net)      | ✓ | ✓ | ✗ | |
+| [bitX](https://www.bitx.co/)      | ✓ | ✗ | ✗ | |
+| [lakeBTC](https://lakebtc.com/)      | ✓ | ✗ | ✗ | |
+| [meXBT](https://mexbt.com/)      | ✓ | ✗ | ✗ | see [here](https://github.com/askmike/gekko/issues/288#issuecomment-223810974). |
+| [zaif](https://zaif.jp/trade_btc_jpy)      | ✓ | ✗ | ✗ | |
+| [lakeBTC](https://lakebtc.com/)      | ✓ | ✗ | ✗ | |
+| [bx.in.th](https://bx.in.th/)      | ✓ | ✗ | ✗ | |
+
+Monitoring means that Gekko is able to watch the realtime market and thus also:
+
+- Run trading strategies against the data (in semi-realtime)
+- Simulate trading profits (paper trader)
+- Store all data (to backtest in the future)
 
 ## Installing Gekko
 
@@ -52,6 +77,12 @@ Gekko runs on [nodejs](http://nodejs.org/), once you have that installed you can
 You need to download Gekko's dependencies, which can easily be done with [npm](http://npmjs.org) (this came with your nodejs installation):
 
     npm install
+
+Docker user? Installing and running gekko is simple on Docker with the following command:
+
+    docker run -d -v /path/to/your/config.js:/usr/src/gekko/config.js --name gekko barnumd/gekko` 
+
+To see process logs: `docker logs --follow gekko`. More info can be found [here](https://hub.docker.com/r/barnumd/gekko/).
 
 ## Configuring Gekko
 
@@ -78,9 +109,7 @@ If you installed Gekko via git you can easily fetch the latest updates by runnin
 
 ## How does Gekko work?
 
-![Gekko 0.1.0 architecture](http://data.wizb.it/misc/gekko-0.1.0-architecture.jpg)
-
-If you want to contribute or are interested in how Gekko works:
+![Gekko architecture](https://wizb.it/gekko/static/architecture.jpg)
 
 - Read about [Gekko's overall architecture](https://github.com/askmike/gekko/tree/stable/docs/internals/architecture.md).
 - Read on how to add [a new exchange to Gekko](https://github.com/askmike/gekko/tree/stable/docs/internals/exchanges.md).
@@ -89,10 +118,20 @@ If you want to contribute or are interested in how Gekko works:
 
 ## TODO
 
+* Stabilize importing API.
 * More tests
-* More exchanges
-* More indicators
-* Webbased interface (?)
+* Better documentation for TA-lib indicators.
+* More indicators (maybe use [this native js lib](https://github.com/anandanand84/technicalindicators)?)
+* Webbased interface ([first step](https://github.com/askmike/gekko/issues/338#issuecomment-228368499))?
+
+*Better exchange support:*
+
+- add GDAX exchange (supports [importing](https://docs.gdax.com/#get-historic-rates))
+- support importing at bitfinex ([here](http://docs.bitfinex.com/#trades)).
+- add okcoin China
+- add okcoin
+- add bitmex
+- fix cryptsy integration..
 
 ## Credits
 
