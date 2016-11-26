@@ -130,15 +130,12 @@ Trader.prototype.buy = function(qty, price, callback) {
   var buy = function(err, data) {
     if (err) {
       log.error('Unable to process order:', err, result);
-      return this.retry(this.coinone.limitBuy, [params, buy]);
     } else if (data.result == 'error') {
       log.error('Got errorCode: ', data.errorCode, ' retrying..');
-      return this.retry(this.coinone.limitBuy, [params, buy]);
     } else {
       log.info('Bid sent to exchange', data);
-      callback(null, data.orderId)
     }
-    console.log(data);
+    callback(null, data.orderId)
 
   }.bind(this);
 
@@ -155,19 +152,16 @@ Trader.prototype.sell = function(qty, price, callback) {
   var sell = function(err, data) {
     if (err) {
       log.error('Unable to process order:', err, result);
-      return this.retry(this.coinone.limitSell, [params, sell]);
     } else if (data.result == 'error') {
       log.error('Got errorCode: ', data.errorCode, ' retrying..');
-      return this.retry(this.coinone.limitSell, [params, sell]);
     } else {
       log.info('Ask sent to exchange', data);
-      callback(null, data.orderId)
     }
-    console.log(data);
+    callback(null, data.orderId)
 
   }.bind(this);
 
-  this.coinone.limitBuy(params, sell);
+  this.coinone.limitSell(params, sell);
 }
 
 Trader.prototype.checkOrder = function(orderId, callback) {
