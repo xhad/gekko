@@ -62,7 +62,7 @@ var exchanges = [
       { pair: ['USD', 'ETH'], minimalOrder: { amount: 0.1, unit: 'asset' } },
       { pair: ['LTC', 'ETH'], minimalOrder: { amount: 0.1, unit: 'asset' } },
       { pair: ['RUR', 'ETH'], minimalOrder: { amount: 0.1, unit: 'asset' } }
-      
+
     ],
     requires: ['key', 'secret'],
     providesHistory: false,
@@ -108,6 +108,21 @@ var exchanges = [
     requires: ['key', 'secret', 'username'],
     providesHistory: false,
     tid: 'tid'
+  },
+  {
+    name: 'CoinOne',
+    slug: 'coinone',
+    direct: false,
+    infinityOrder: false,
+    currencies: ['KRW'],
+    assets: ['BTC'],
+    markets: [
+      { pair: ['KRW', 'BTC'], minimalOrder: { amount: 0.001, unit: 'asset' } },
+    ],
+    requires: ['key', 'secret'],
+    providesHistory: false,
+    fetchTimespan: 60,
+    tid: 'date',
   },
   {
     name: 'Kraken',
@@ -176,7 +191,7 @@ var exchanges = [
        'MMNXT', 'MMXIV', 'MNTA', 'MON', 'MRC', 'MRS', 'MTS', 'MUN', 'MYR',
        'MZC', 'N5X', 'NAS', 'NAUT', 'NAV', 'NBT', 'NEOS', 'NL', 'NMC', 'NOBL',
        'NOTE', 'NOXT', 'NRS', 'NSR', 'NTX', 'NXT', 'NXTI', 'OMNI', 'OPAL',
-       'PAND', 'PAWN', 'PIGGY', 'PINK', 'PLX', 'PMC', 'POT', 'PPC', 'PRC', 
+       'PAND', 'PAWN', 'PIGGY', 'PINK', 'PLX', 'PMC', 'POT', 'PPC', 'PRC',
        'PRT', 'PTS', 'Q2C', 'QBK', 'QCN','QORA', 'QTL', 'RADS', 'RBY', 'RDD', 'REP',
        'RIC', 'RZR', 'SBD', 'SC', 'SDC', 'SHIBE', 'SHOPX', 'SILK', 'SJCX',
        'SLR', 'SMC', 'SOC', 'SPA', 'SQL', 'SRCC', 'SRG', 'SSD', 'STEEM', 'STR',
@@ -188,7 +203,7 @@ var exchanges = [
        'XST', 'XSV', 'XUSD', 'XVC', 'XXC', 'YACC', 'YANG', 'YC', 'YIN'
     ],
     markets: [
-      // *** BTC <-> XXX      
+      // *** BTC <-> XXX
       { pair: ['BTC', '1CR'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
       { pair: ['BTC', 'ABY'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
       { pair: ['BTC', 'AC'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
@@ -468,10 +483,10 @@ var exchanges = [
       { pair: ['BTC', 'YC'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
       { pair: ['BTC', 'YIN'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
 
-      // *** USDT <-> XXX     
+      // *** USDT <-> XXX
       { pair: ['USDT', 'BTC'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
       { pair: ['USDT', 'ETH'], minimalOrder: { amount: 0.0001, unit: 'asset' } }
-   
+
     ],
     requires: ['key', 'secret'],
     tid: 'tid',

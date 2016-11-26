@@ -21,6 +21,7 @@
     "btc-e": "0.0.x",
     "btc-markets": "0.0.6",
     "cexio": "0.0.x",
+    "coinone-g": "0.0.1",
     "commander": "^2.9.0",
     "kraken-api": "0.1.x",
     "lakebtc_nodejs": "0.1.x",
