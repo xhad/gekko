@@ -1,4 +1,4 @@
-var CoinOne = require('coinone');
+var CoinOne = require('coinone-g');
 var util = require('../core/util.js');
 var _ = require('lodash');
 var moment = require('moment');
@@ -132,6 +132,7 @@ Trader.prototype.buy = function(qty, price, callback) {
       log.error('Unable to process order:', err, result);
     } else if (data.result == 'error') {
       log.error('Got errorCode: ', data.errorCode, ' retrying..');
+      return this.retry(this.coinone.limitBuy, [params, buy])
     } else {
       log.info('Bid sent to exchange', data);
     }
@@ -154,6 +155,7 @@ Trader.prototype.sell = function(qty, price, callback) {
       log.error('Unable to process order:', err, result);
     } else if (data.result == 'error') {
       log.error('Got errorCode: ', data.errorCode, ' retrying..');
+      return this.retry(this.coinone.limitBuy, [params, buy])
     } else {
       log.info('Ask sent to exchange', data);
     }
