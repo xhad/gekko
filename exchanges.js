@@ -117,7 +117,7 @@ var exchanges = [
     currencies: ['KRW'],
     assets: ['BTC'],
     markets: [
-      { pair: ['BTC', 'KRW'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
+      { pair: ['KRW', 'BTC'], minimalOrder: { amount: 0.0001, unit: 'asset' } },
     ],
     requires: ['key', 'secret'],
     providesHistory: false,
