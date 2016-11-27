@@ -29,11 +29,12 @@ module.exports = function(done) {
       log.info('\t', 'from:', moment.unix(r.from).utc().format('YYYY-MM-DD HH:mm:ss'));
       log.info('\t', 'to:', moment.unix(r.to).utc().format('YYYY-MM-DD HH:mm:ss'));
 
-      
+
       setDateRange(r.from, r.to);
       return done();
     }
 
+    if(ranges[0]) {
     log.info(
       'Gekko detected multiple dateranges in the locally stored history.',
       'Please pick the daterange you are interested in testing:'
@@ -59,6 +60,10 @@ module.exports = function(done) {
       setDateRange(range.from, range.to);
       return done();
     });
+  } else {
+    log.info('No date ranges were found');
+    done();
+  }
 
   });
 }

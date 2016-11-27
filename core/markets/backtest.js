@@ -8,7 +8,6 @@ var moment = require('moment');
 var adapter = config.adapters[config.backtest.adapter];
 var Reader = require(dirs.gekko + adapter.path + '/reader');
 var daterange = config.backtest.daterange;
-
 var to = moment.utc(daterange.to);
 var from = moment.utc(daterange.from);
 

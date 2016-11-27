@@ -19,7 +19,7 @@ var reader = new Reader();
 var scan = function(done) {
   log.info('Scanning local history for backtestable dateranges.');
 
-  reader.tableExists('candles', (err, exists) => {
+  reader.tableExists((err, exists) => {
 
     if(err)
       return done(err);
@@ -54,7 +54,7 @@ var scan = function(done) {
       var missing = optimal - res.available + 1;
 
       log.info(`The database has ${missing} candles missing, Figuring out which ones...`);
-      
+
       var iterator = {
         from: last - (BATCH_SIZE * 60),
         to: last
@@ -92,13 +92,13 @@ var scan = function(done) {
             iterator.to -= BATCH_SIZE * 60;
           },
           () => {
-            
+
             if(!_.size(batches))
               util.die('Not enough data to work with (please manually set a valid `backtest.daterange`)..', true);
 
             // batches is now a list like
             // [ {from: unix, to: unix } ]
-            
+
             var ranges = [ batches.shift() ];
 
             _.each(batches, batch => {

@@ -12,6 +12,7 @@ var Reader = function Reader () {
   this.pair = mongoUtil.settings.pair.join('_');
 }
 
+
 // returns the furtherst point (up to `from`) in time we have valid data from
 Reader.prototype.mostRecentWindow = function mostRecentWindow (from, to, next) {
   var mFrom = from.unix();
@@ -98,7 +99,7 @@ Reader.prototype.getBoundry = function getBoundry (next) {
     }
     var start = _.first(docs).start;
 
-    collection.find({ pair: this.pair }, { start: 1 }).sort({ start: -1 }).limit(1).toArray((err2, docs2) => {
+    this.collection.find({ pair: this.pair }, { start: 1 }).sort({ start: -1 }).limit(1).toArray((err2, docs2) => {
       if (err2) {
         return util.die('DB error at `getBoundry`');
       }
@@ -111,6 +112,18 @@ Reader.prototype.getBoundry = function getBoundry (next) {
 
 Reader.prototype.close = function close () {
   this.db = null;
+}
+
+Reader.prototype.tableExists = function tableExists (next) {
+  return this.collection.findOne((err, result) => {
+    console.log(result);
+    if (err || !result)
+      return false;
+    else if (!result)
+      return false;
+    else
+      return next(null, true);
+  })
 }
 
 module.exports = Reader;
