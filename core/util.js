@@ -74,19 +74,24 @@ var util = {
     + `\nNodejs version: ${process.version}`;
   },
   die: function(m, soft) {
+    if(_gekkoEnv === 'standalone' || !_gekkoEnv)
+      var log = console.log.bind(console);
+    else if(_gekkoEnv === 'child-process')
+      var log = m => process.send({type: 'error', error: m});
+
     if(m) {
       if(soft) {
-        console.log('\n', m, '\n\n');
+        log('\n ' + m + '\n\n');
       } else {
-        console.log('\n\nGekko encountered an error and can\'t continue');
-        console.log('\nError:\n');
-        console.log(m, '\n\n');
-        console.log('\nMeta debug info:\n');
-        console.log(util.logVersion());
-        console.log('');
+        log('\n\nGekko encountered an error and can\'t continue');
+        log('\nError:\n');
+        log(m, '\n\n');
+        log('\nMeta debug info:\n');
+        log(util.logVersion());
+        log('');
       }
     }
-    process.exit(0);
+    process.exit(1);
   },
   dirs: function() {
     var ROOT = __dirname + '/../';
@@ -100,7 +105,11 @@ var util = {
       methods: ROOT + 'methods/',
       indicators: ROOT + 'methods/indicators/',
       budfox: ROOT + 'core/budfox/',
-      importers: ROOT + 'importers/exchanges/'
+      importers: ROOT + 'importers/exchanges/',
+      tools: ROOT + 'core/tools/',
+      workers: ROOT + 'core/workers/',
+      web: ROOT + 'web/',
+      config: ROOT + 'config/'
     }
   },
   inherit: function(dest, source) {
@@ -134,13 +143,17 @@ var util = {
     ]
   },
   setGekkoEnv: function(env) {
-    util.die('only standalone supported, see\n\nhttps://github.com/askmike/gekko/issues/456ref-issue-177670116')
-
     _gekkoEnv = env;
   },
   gekkoEnv: function() {
     return _gekkoEnv || 'standalone';
-  }
+  },
+  launchUI: function() {
+    if(program['ui'])
+      return true;
+    else
+      return false;
+  },
 }
 
 // NOTE: those options are only used
@@ -150,6 +163,7 @@ program
   .option('-c, --config <file>', 'Config file')
   .option('-b, --backtest', 'backtesting mode')
   .option('-i, --import', 'importer mode')
+  .option('--ui', 'launch a web UI')
   .parse(process.argv);
 
 // make sure the current node version is recent enough

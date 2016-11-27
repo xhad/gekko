@@ -60,7 +60,6 @@ Trader.prototype.getTicker = function(callback) {
 }
 
 Trader.prototype.getTrades = function(since, callback, descending) {
-
   var process = function(err, result) {
     if (err)
       return this.retry(this.coinone.orderbook());
@@ -73,14 +72,13 @@ Trader.prototype.getTrades = function(since, callback, descending) {
       }
     })
 
-    callback(null, trades.reverse());
+    callback(null, trades);
   }.bind(this);
 
   this.coinone.trades(process);
 }
 
 Trader.prototype.getFee = function(callback) {
-
   var process = function(err, result) {
     if (err)
       return this.retry(this.coineone.userInfo(process));

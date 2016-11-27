@@ -33,11 +33,11 @@ Gekko is not built for HFT or anything related to being the fastest (like arbitr
 
 **So Gekko is not:**
 
-- A trading platform for human day traders with a GUI and charts.
-- A High frequency trading bot designed to operate on < minute resolution.
-- A fully automated trading bot that you turn on and will generate profit without you having to do anything.
-- An exchange.
-- An arbitrage bot.
+- A trading platform for human day traders (although it can be used to support human traders)
+- A High frequency trading bot designed to operate on < minute resolution
+- A fully automated trading bot that you turn on and will generate profit without you having to do anything
+- An exchange
+- An arbitrage bot
 
 ## Supported exchanges
 
@@ -76,7 +76,7 @@ Gekko runs on [nodejs](http://nodejs.org/), once you have that installed you can
 
 You need to download Gekko's dependencies, which can easily be done with [npm](http://npmjs.org) (this came with your nodejs installation):
 
-    npm install
+    npm install --only=production
 
 Docker user? Installing and running gekko is simple on Docker with the following command:
 
@@ -105,7 +105,7 @@ You can also run Gekko silently or use more complex features, for examples check
 
 If you installed Gekko via git you can easily fetch the latest updates by running:
 
-    git pull && npm install
+    git pull && npm install --only=production
 
 ## How does Gekko work?
 
