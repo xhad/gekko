@@ -153,12 +153,11 @@ Trader.prototype.sell = function(qty, price, callback) {
       log.error('Unable to process order:', err, result);
     } else if (data.result == 'error') {
       log.error('Got errorCode: ', data.errorCode, ' retrying..');
-      return this.retry(this.coinone.limitBuy, [params, buy])
+      return this.retry(this.coinone.limitSell, [params, sell])
     } else {
       log.info('Ask sent to exchange', data);
     }
     callback(null, data.orderId)
-
   }.bind(this);
 
   this.coinone.limitSell(params, sell);
