@@ -116,7 +116,6 @@ Reader.prototype.close = function close () {
 
 Reader.prototype.tableExists = function tableExists (next) {
   return this.collection.findOne((err, result) => {
-    console.log(result);
     if (err || !result)
       return false;
     else if (!result)
