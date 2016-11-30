@@ -72,6 +72,7 @@ Trader.prototype.getTicker = function(callback) {
     // data, the callback is still the same since
     // we are inside the same javascript scope.
     callback(err, {bid: +data.bid, ask: +data.ask})
+  	}
   }.bind(this);
   this.bitfinex.ticker(this.pair, process);
 }
