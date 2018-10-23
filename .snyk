@@ -1,0 +1,10 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.12.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:tunnel-agent:20170305':
+    - btc-china-fork > request > tunnel-agent:
+        patched: '2018-10-23T09:28:47.428Z'
+    - okcoin-china > request > tunnel-agent:
+        patched: '2018-10-23T09:28:47.428Z'
