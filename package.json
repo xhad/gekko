@@ -8,7 +8,9 @@
     "bitcoin"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/*.js --recursive test -u tdd --reporter spec"
+    "test": "./node_modules/.bin/mocha test/*.js --recursive test -u tdd --reporter spec",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Mike van Rossum <mike@mvr.me>",
   "dependencies": {
@@ -33,7 +35,8 @@
     "semver": "2.2.1",
     "sqlite3": "3.1.4",
     "zaif.jp": "^0.1.4",
-    "gekko": "0.0.6"
+    "gekko": "0.0.6",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "chai": "^2.0.0",
@@ -48,5 +51,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/askmike/gekko.git"
-  }
+  },
+  "snyk": true
 }
